@@ -15,10 +15,9 @@ inputFile = sys.argv[1]
 
 # Calculate MFCC
 (rate,sig) = wav.read(inputFile)
-(mfcc_features, mfcc_energy) = mfcc(sig, rate, 0.025, 0.01, 13, 26, 2048)
+mfcc_features = mfcc(sig, rate, nfft=2048)
 # d_mfcc_feat = delta(mfcc_feat, 2)
 # fbank_feat = logfbank(sig,rate)
 
 # Print MFCC
-print(mfcc_feat)
-print(mfcc_energy)
+print(mfcc_features)
