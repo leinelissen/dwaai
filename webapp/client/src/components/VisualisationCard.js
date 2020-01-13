@@ -12,16 +12,18 @@ export default class VisualizationCard extends React.Component {
 
     return (
       <section className="postcard">
-        <div className="analysis">
-          {this.props.visualisation.map((height, i) =>
-            <div
-              key={i}
-              style={{ ...waveStyle, height }}
-            />
-          )}
-        </div>
+        <div className="content">
+          <div className="analysis">
+            {this.props.visualisation.map((height, i) =>
+              <div
+                key={i}
+                style={{ ...waveStyle, height }}
+              />
+            )}
+          </div>
 
-        <h2>{ this.props.percentage }% Brabants</h2>
+          <h2>{ this.props.percentage }% Brabants</h2>
+        </div>
 
         <div className="footer">
           <img src={eindhoven} />
