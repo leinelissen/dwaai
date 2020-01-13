@@ -11,17 +11,19 @@ export default class VisualizationCard extends React.Component {
     };
 
     return (
-      <section className="postcard sheet padding-10mm">
-        <div className="analysis">
-          {this.props.visualisation.map((height, i) =>
-            <div
-              key={i}
-              style={{ ...waveStyle, height }}
-            />
-          )}
-        </div>
+      <section className="postcard">
+        <div className="content">
+          <div className="analysis">
+            {this.props.visualisation.map((height, i) =>
+              <div
+                key={i}
+                style={{ ...waveStyle, height: height * 1.5 }}
+              />
+            )}
+          </div>
 
-        <h2>{ this.props.percentage }% Brabants</h2>
+          <h2>{ this.props.percentage }% Brabants</h2>
+        </div>
 
         <div className="footer">
           <img src={eindhoven} />
