@@ -17,7 +17,7 @@ const resultAlmost = {
 const resultNo = {
   en: 'Not yet, but getting there!',
   nl: 'Nog niet, maar gaat de goede kant op!',
-  br: 'Nog nie, ffkes oefenen nog!',
+  br: 'Nog nie, efkes oefenen nog!',
 }
 
 const score = {

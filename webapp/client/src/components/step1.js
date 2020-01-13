@@ -3,7 +3,7 @@ import React from "react";
 const intro = {
   en: 'Pronounce the sentence above in your best Brabants accent and find out!',
   nl: 'Spreek de zin hierboven uit in je beste Brabantse accent en kom erachter!',
-  br: 'Spreek d\'n zin hierboven uit in oew beste Brabantse accent en kom d\'r achter!',
+  br: 'Kende gij de zin hierboven uitsprèke? Dan kenne wij oe vertelle of gij enne Brabander zijt',
 }
 
 const cta = {
