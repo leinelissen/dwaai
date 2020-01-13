@@ -14,6 +14,7 @@ import os
 import pickle
 import tensorflow as tf
 from keras.models import load_model
+from keras import backend as K
 
 # Guard: check if there is a argument given, otherwise raise error
 if len(sys.argv) < 2:
@@ -58,20 +59,21 @@ sys.stdout.flush()
 # =========================================================================================================
 
 # 1. Load Random Forest Classifier
-filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\random_forest_final.sav'
+filename = os.path.join(os.path.curdir, 'random_forest_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
 predictions_rf = loaded_model.predict_proba(Xnew)
 
 # 2. Load Gradient Boosting
-filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
+filename = os.path.join(os.path.curdir, 'gradient_boosting_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
 predictions_gb = loaded_model.predict_proba(Xnew)
 
 # Print both predictions
-print((predictions_rf[0][0]), ',', (predictions_gb[0][0]))
+print(str(predictions_rf[0][0]) + ',' + str(predictions_gb[0][0]))
 
 # 3. Load One-Dimensional Convolutional Network and make prediction
-model = tf.keras.models.load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.model')
+K.clear_session()
+model = tf.keras.models.load_model(os.path.join(os.path.curdir, '1D_Conv_model.model'), compile=False)
 # ---------------------------------------------------------------------------------------------------------
 # reshape
 xtss = Xnew.shape
