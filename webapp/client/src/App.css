@@ -95,6 +95,10 @@ button:active, button:focus {
   width: 30vw;
 }
 
+#qr-code-scanner video {
+  transform: rotateY(180deg);
+}
+
 #language-picker {
   position: absolute;
   right: 0;
