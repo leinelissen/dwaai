@@ -12,9 +12,15 @@ import librosa
 import numpy as np
 import os
 import pickle
+
+# Prevent tensorflow from printing stuff
+stderr = sys.stderr
+sys.stderr = open(os.devnull, 'w')
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
 from keras.models import load_model
 from keras import backend as K
+sys.stderr = stderr
 
 # Guard: check if there is a argument given, otherwise raise error
 if len(sys.argv) < 2:
@@ -68,17 +74,16 @@ filename = os.path.join(os.path.curdir, 'gradient_boosting_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
 predictions_gb = loaded_model.predict_proba(Xnew)
 
-# Print both predictions
-print(str(predictions_rf[0][0]) + ',' + str(predictions_gb[0][0]))
-
 # 3. Load One-Dimensional Convolutional Network and make prediction
 K.clear_session()
 model = tf.keras.models.load_model(os.path.join(os.path.curdir, '1D_Conv_model.model'), compile=False)
 # ---------------------------------------------------------------------------------------------------------
 # reshape
 xtss = Xnew.shape
-XKeras = np.reshape(Xnew, (xtss[0], xtss[1], 1))
-print(XKeras)
+XKeras = np.reshape(Xnew.values, (xtss[0], xtss[1], 1))
 # Make a prediction 
-prediction = model.predict_proba(XKeras)
-print(prediction)
+predictions_cnn = model.predict_proba(XKeras)
+
+# Output all predictions
+print(str(predictions_rf[0][0]) + ',' + str(predictions_gb[0][0]) + ',' + str(predictions_cnn[0][0]))
+sys.stdout.flush()
