@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 export default class Step3 extends Component {
   countdownInterval = null;
   recorder = null;
-  analysisTick = 0;
 
   state = {
     countdownLeft: 3,
@@ -14,6 +13,7 @@ export default class Step3 extends Component {
     isAnalyzing: false,
     karaokeIndex: 0,
     visualisationValues: [],
+    tickTimestamp: 0,
   };
 
   constructor() {
@@ -51,11 +51,9 @@ export default class Step3 extends Component {
       return;
     }
 
-    // Increase analysis tick
-    this.analysisTick += 1;
-
     // Exit function if we're not at a particular tick
-    if (this.analysisTick % 3 !== 0) {
+    const currentTick = (new Date()).getTime();
+    if (currentTick < this.state.tickTimestamp + 50) {
       return;
     }
 
@@ -66,8 +64,9 @@ export default class Step3 extends Component {
     this.setState({
       visualisationValues: [
         ...this.state.visualisationValues,
-        meanValue
-      ]
+        meanValue,
+      ],
+      tickTimestamp: currentTick,
     });
   }
 
