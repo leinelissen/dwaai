@@ -30,7 +30,7 @@ app.post('/recording', upload.single('audio'), function (req, res) {
 
   // Spawn python process
   const scriptPath = path.resolve(__dirname, '..', 'mfcc', process.env.MODEL_SCRIPT_NAME);
-  const pythonProcess = exec(`python3 "${scriptPath}" "${req.file.path}"`, (error, stdout, stderr) => {
+  const pythonProcess = exec(`python "${scriptPath}" "${req.file.path}"`, (error, stdout, stderr) => {
     if (error || stderr) {
       // Log error message to console
       console.log('Received error from python: ', error, stderr);

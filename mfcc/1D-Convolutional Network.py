@@ -8,6 +8,7 @@ import pickle
 import sys
 import os
 import pandas as pd
+# 1. One-Dimensional Convolutional Network
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -61,8 +62,12 @@ print(y_train.shape, 'y')
 xts = X_train.shape
 xtss = X_test.shape
 
+print(X_test, 'After Xtest')
+
 X_train = np.reshape(X_train, (xts[0], xts[1], 1))
 X_test = np.reshape(X_test, (xtss[0], xtss[1], 1))
+
+print(X_test)
 
 print(len(X_train), 'training sequences, ', len(X_test), 'test sequences')
 print(X_train.shape)
@@ -153,9 +158,6 @@ score = model.evaluate(X_test, y_test, verbose=1)
 print("Score:", score)
 print(classification_report(y_test.argmax(axis=1), y_preds.argmax(axis=1), target_names=le.classes_))
 
-# Save the model:
-model.save('1D_Conv_model.h5')
-
 #==============================================================================
 #   PROBABILITY PREDICTIONS
 #   ==============
@@ -163,20 +165,20 @@ model.save('1D_Conv_model.h5')
 #   Keras' 1D Convolutional Neural Network. The attempt was fruitless.
 #==============================================================================
 
-'''
 # Guard: check if there is 
-if len(sys.argv) < 2:
-    raise Exception('No input file')
+# if len(sys.argv) < 2:
+#    raise Exception('No input file')
 
 # Get argument from node.js. This is the absolute path from the generated audio file that is saved in "..."
-inputFile_path = sys.argv[1]
-# 
-
+# inputFile_path = sys.argv[1]
+'''
 Xnew = scalar.transform(Xnew)
 # make a prediction 
 ynew = model.predict_proba(Xnew)
 # show the inputs and predicted outputs
 for i in range(len(Xnew)):
 	print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
+'''
 
-''' 
+# save the model 
+model.save('1D_Conv_model.model')
