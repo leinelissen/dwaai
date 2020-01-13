@@ -6,7 +6,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: calc(10px + 1.5vmin);
-  background-color: #de1f13;
 }
 
 .style-font{
