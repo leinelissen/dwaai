@@ -122,9 +122,37 @@ button:active, button:focus {
   opacity: 1 !important;
 }
 
+/* Printing */
+.A5Landscape .postcard{
+  width: 210mm;
+  height: 147mm;
+  padding: 10mm;
+}
+
+@media screen {/* screen preview */
+  .A5Landscape .postcard {
+    background: white;
+    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
+    margin: 5mm auto;
+  }
+}
+
+@media print {/* Fix for Chrome issue #273306 */
+  .A5Landscape {
+    width: 210mm;
+  }
+}
+
+/* Postcard */
 .postcard{
   text-align:center;
   color:#999999;
+  padding-top:30px;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  page-break-after: always;
 }
 
 .postcard .footer{
