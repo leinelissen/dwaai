@@ -12,7 +12,7 @@ import librosa
 import numpy as np
 import os
 import pickle
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 # Guard: check if there is a argument given, otherwise raise error
 if len(sys.argv) < 2:
@@ -44,9 +44,10 @@ features_deploy = []
 # Extract features
 incoming_data = extract_features(inputFile_path)
 # Then store the resulting MFCC in the feature array 
-features_deploy.append([incoming_data])
+features_deploy.append(incoming_data)
 # Put features in a pandas dataframe
 Xnew = pd.DataFrame(features_deploy)
+'''
 print(Xnew, 'After pandas')
 # reshape
 xtss = Xnew.shape
@@ -70,7 +71,6 @@ import tensorflow as tf
 from keras.models import load_model
 model = tf.keras.models.load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.model')
 # ---------------------------------------------------------------------------------------------------------
-# Generate 2d classification dataset
 CATEGORIES = ["Brabants", "Non-Brabants"]
 # Make a prediction 
 prediction = model.predict_proba(Xnew)
@@ -78,12 +78,15 @@ print(prediction)  # will be a list in a list.
 print(CATEGORIES[int(prediction[0][0])])
 # for i in range(len(Xnew)):
 	#print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
+'''
 
 # 2. Load Random Forest Classifier
 filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\random_forest_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-predictions = classifier.predict_proba(Xnew)
-
+sc = StandardScaler()
+Xnew = sc.fit_transform(Xnew)
+predictions = loaded_model.predict_proba(Xnew)
+print(predictions)
 
 # 3. Load Gradient Boosting
 # filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
