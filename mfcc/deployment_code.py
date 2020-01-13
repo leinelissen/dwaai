@@ -1,4 +1,3 @@
-import sys
 # =========================================================================================================
 # DEPLOYMENT CODE! FISSA
 # First we import our dependencies
@@ -6,13 +5,15 @@ import sys
 number_mfcc_bands = 120
 
 # Load various imports 
+import sys
 import pandas as pd
 import os
 import librosa
 import numpy as np
 import os
 import pickle
-from sklearn.preprocessing import StandardScaler
+import tensorflow as tf
+from keras.models import load_model
 
 # Guard: check if there is a argument given, otherwise raise error
 if len(sys.argv) < 2:
@@ -47,63 +48,35 @@ incoming_data = extract_features(inputFile_path)
 features_deploy.append(incoming_data)
 # Put features in a pandas dataframe
 Xnew = pd.DataFrame(features_deploy)
-'''
-print(Xnew, 'After pandas')
-# reshape
-xtss = Xnew.shape
-print(incoming_data)
-print(Xnew)
-print(xtss)
-print(xtss[0])
-Xnew = np.reshape(Xnew, (xtss[0], xtss[1], 1))
-print(Xnew)
 sys.stdout.flush()
 
 # =========================================================================================================
 # Load in your Machine Learning/Deep Learning Model to make prediction 
-# 1. One-Dimensional Convolutional Network
-# 2. Random Forest
-# 3. Gradient Boosting
+# 1. Random Forest
+# 2. Gradient Boostin
+# 3. One-Dimensional Convolutional Network
 # =========================================================================================================
 
-# 1. Load One-Dimensional Convolutional Network and make prediction
-import tensorflow as tf
-from keras.models import load_model
-model = tf.keras.models.load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.model')
-# ---------------------------------------------------------------------------------------------------------
-CATEGORIES = ["Brabants", "Non-Brabants"]
-# Make a prediction 
-prediction = model.predict_proba(Xnew)
-print(prediction)  # will be a list in a list.
-print(CATEGORIES[int(prediction[0][0])])
-# for i in range(len(Xnew)):
-	#print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
-'''
-
-# 2. Load Random Forest Classifier
+# 1. Load Random Forest Classifier
 filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\random_forest_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-sc = StandardScaler()
-Xnew = sc.fit_transform(Xnew)
-predictions = loaded_model.predict_proba(Xnew)
-print(predictions)
+predictions_rf = loaded_model.predict_proba(Xnew)
 
-# 3. Load Gradient Boosting
-# filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
-# loaded_model = pickle.load(open(filename, 'rb'))
+# 2. Load Gradient Boosting
+filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
+predictions_gb = loaded_model.predict_proba(Xnew)
 
-# =========================================================================================================
-# Make a prediction for the outcome of the following models
-# 1. One-Dimensional Convolutional Network
-# 2. Random Forest
-# 3. Gradient Boosting
-# =========================================================================================================
+# Print both predictions
+print((predictions_rf[0][0]), ',', (predictions_gb[0][0]))
 
-# 1. Make prediction for One-Dimensional Convolutional Network
-
-# 2. Make prediction for Random Forest
-
-# =========================================================================================================
-# Convert to % and send to Node.js
-# =========================================================================================================
-
+# 3. Load One-Dimensional Convolutional Network and make prediction
+model = tf.keras.models.load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.model')
+# ---------------------------------------------------------------------------------------------------------
+# reshape
+xtss = Xnew.shape
+XKeras = np.reshape(Xnew, (xtss[0], xtss[1], 1))
+print(XKeras)
+# Make a prediction 
+prediction = model.predict_proba(XKeras)
+print(prediction)
