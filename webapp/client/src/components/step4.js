@@ -61,10 +61,10 @@ export default function Step4(props) {
     <div>
       <h1 className="style-font">{ renderResult(props.recordingResult) }</h1>
       <h2>{score[props.language]} { props.recordingResult }%</h2>
-      <button className="style-font" onClick={() => props.setStep(3)}>&#8634; {retry[props.language]}</button>
+      <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
 
       <ReactToPrint
-        trigger={() => <button className="style-font">&#128438; Print</button>}
+        trigger={() => <button className="style-font"><img src="/print-regular.svg" alt="Retry" /> Print</button>}
         content={() => componentRef.current}
         onAfterPrint={ () => props.setStep(1) }
         bodyClass="A5Landscape"

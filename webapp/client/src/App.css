@@ -206,3 +206,16 @@ button:active, button:focus {
   height: 100vh;
   width: 70vw;
 }*/
+
+button {
+  line-height: 1em;
+  display: inline-flex;
+  justify-content: center;
+}
+
+button img {
+  height: 1em;
+  width: auto;
+  display: inline-block;
+  margin-right: 0.5em;
+}

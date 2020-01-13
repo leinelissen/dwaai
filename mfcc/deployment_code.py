@@ -47,6 +47,8 @@ incoming_data = extract_features(inputFile_path)
 features_deploy.append(incoming_data)
 # Put features in a pandas dataframe
 Xnew = pd.DataFrame(features_deploy)
+
+print(Xnew)
 '''
 print(Xnew, 'After pandas')
 # reshape
@@ -81,10 +83,11 @@ print(CATEGORIES[int(prediction[0][0])])
 '''
 
 # 2. Load Random Forest Classifier
-filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\random_forest_final.sav'
+filename = os.path.join(os.path.curdir, 'random_forest_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
-sc = StandardScaler()
-Xnew = sc.fit_transform(Xnew)
+# sc = StandardScaler()
+# Xnew = sc.fit_transform(Xnew)
+print(Xnew)
 predictions = loaded_model.predict_proba(Xnew)
 print(predictions)
 
