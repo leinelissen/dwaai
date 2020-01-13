@@ -14,11 +14,9 @@ export default class VisualizationCard extends React.Component {
       <section className="postcard sheet padding-10mm">
         <div className="analysis">
           {this.props.visualisation.map((height, i) =>
-            <motion.div
+            <div
               key={i}
-              animate={{ height }}
-              positionTransition
-              style={waveStyle}
+              style={{ ...waveStyle, height }}
             />
           )}
         </div>
