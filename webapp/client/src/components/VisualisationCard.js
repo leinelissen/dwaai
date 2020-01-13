@@ -11,14 +11,12 @@ export default class VisualizationCard extends React.Component {
     };
 
     return (
-      <section className="postcard sheet padding-10mm">
+      <section className="postcard sheet padding-10mm" style={{ backgroundColor: '#ffffff' }}>
         <div className="analysis">
           {this.props.visualisation.map((height, i) =>
-            <motion.div
+            <div
               key={i}
-              animate={{ height }}
-              positionTransition
-              style={waveStyle}
+              style={{ waveStyle, height }}
             />
           )}
         </div>

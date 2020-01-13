@@ -44,7 +44,7 @@ export default function Step4(props) {
         content={() => componentRef.current}
         ref={printRef}
         bodyClass="A5"
-        pageStyle='@page { size: A5; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
+        pageStyle='@page { size: A5; margin: 0mm; background-color: white; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
       />
       <div style={{ display: "none" }}>
         <VisualisationCard ref={componentRef} percentage={props.recordingResult} visualisation={props.visualisationResult} />
