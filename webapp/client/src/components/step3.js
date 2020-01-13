@@ -111,8 +111,9 @@ export default class Step3 extends Component {
         return this.postRecording(blob);
       })
       .then((res) => {
+        console.log('Model results', res);
         // Return result from back-end to container component
-        this.props.setRecordingResult(res.result);
+        this.props.setRecordingResult(res);
         this.props.setVisualisationResult(this.state.visualisationValues);
         this.props.setStep(4);
       })

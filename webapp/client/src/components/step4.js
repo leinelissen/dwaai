@@ -34,6 +34,8 @@ const retry = {
 
 export default function Step4(props) {
   const componentRef = useRef();
+  const { recordingResult: { convolutionalNeuralNetwork } } = props;
+  const modelResult = Math.round(convolutionalNeuralNetwork * 100);
 
   const renderResult = (result) => {
     if(result >= 80){
@@ -59,8 +61,8 @@ export default function Step4(props) {
 
   return (
     <div>
-      <h1 className="style-font">{ renderResult(props.recordingResult) }</h1>
-      <h2>{score[props.language]} { props.recordingResult }%</h2>
+      <h1 className="style-font">{ renderResult(modelResult) }</h1>
+      <h2>{score[props.language]} { modelResult }%</h2>
       <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
 
       <ReactToPrint
@@ -71,7 +73,7 @@ export default function Step4(props) {
         pageStyle='@page { size: A5 landscape; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
       />
       <div style={{ display: "none" }}>
-        <VisualisationCard ref={componentRef} percentage={props.recordingResult} visualisation={props.visualisationResult} />
+        <VisualisationCard ref={componentRef} percentage={modelResult} visualisation={props.visualisationResult} />
       </div>
     </div>
   );

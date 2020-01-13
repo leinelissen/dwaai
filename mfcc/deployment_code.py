@@ -26,6 +26,9 @@ sys.stderr = stderr
 if len(sys.argv) < 2:
     raise Exception('No input file')
 
+# Get the directory of the file, so that we can reference to the stored models
+modelPath = os.path.dirname(os.path.abspath(__file__))
+
 # Get argument from node.js. This is the absolute path from the generated audio file that is saved in "..."
 inputFile_path = sys.argv[1]
 
@@ -65,18 +68,18 @@ sys.stdout.flush()
 # =========================================================================================================
 
 # 1. Load Random Forest Classifier
-filename = os.path.join(os.path.curdir, 'random_forest_final.sav')
+filename = os.path.join(modelPath, 'random_forest_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
 predictions_rf = loaded_model.predict_proba(Xnew)
 
 # 2. Load Gradient Boosting
-filename = os.path.join(os.path.curdir, 'gradient_boosting_final.sav')
+filename = os.path.join(modelPath, 'gradient_boosting_final.sav')
 loaded_model = pickle.load(open(filename, 'rb'))
 predictions_gb = loaded_model.predict_proba(Xnew)
 
 # 3. Load One-Dimensional Convolutional Network and make prediction
 K.clear_session()
-model = tf.keras.models.load_model(os.path.join(os.path.curdir, '1D_Conv_model.model'), compile=False)
+model = tf.keras.models.load_model(os.path.join(modelPath, '1D_Conv_model.model'), compile=False)
 # ---------------------------------------------------------------------------------------------------------
 # reshape
 xtss = Xnew.shape
