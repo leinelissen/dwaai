@@ -16,7 +16,7 @@ export default class VisualizationCard extends React.Component {
           {this.props.visualisation.map((height, i) =>
             <div
               key={i}
-              style={{ waveStyle, height }}
+              style={{ ...waveStyle, height }}
             />
           )}
         </div>
