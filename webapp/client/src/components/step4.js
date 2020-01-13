@@ -2,6 +2,36 @@ import React, { useEffect, useRef } from "react";
 import ReactToPrint from 'react-to-print';
 import VisualisationCard from './VisualisationCard';
 
+const resultYes = {
+  en: 'Yes, you are!',
+  nl: 'Ja, je ben het!',
+  br: 'Ja, ge bent!',
+}
+
+const resultAlmost = {
+  en: 'That\'s quite okay!',
+  nl: 'Dat klinkt al goed!',
+  br: 'Denk \'t bijna wel of nie?',
+}
+
+const resultNo = {
+  en: 'Not yet, but getting there!',
+  nl: 'Nog niet, maar gaat de goede kant op!',
+  br: 'Nog nie, ffkes oefenen nog!',
+}
+
+const score = {
+  en: 'Your score is',
+  nl: 'Je score is',
+  br: 'Je score is',
+}
+
+const retry = {
+  en: 'Retry',
+  nl: 'Opnieuw',
+  br: 'Opnieuw',
+}
+
 export default function Step4(props) {
   const componentRef = useRef();
 
@@ -9,19 +39,19 @@ export default function Step4(props) {
     if(result >= 80){
       return <span>
                 <span role="img" aria-label="party popper">🎉</span>
-                  Yes, you are!
+                  {resultYes[props.language]}
                 <span role="img" aria-label="party popper">🎉</span>
             </span>;
     }else if(result>=30){
       return <span>
                 <span role="img" aria-label="clapping hands">👏</span>
-                  That's quite okay!
+                  {resultAlmost[props.language]}
                 <span role="img" aria-label="clapping hands">👏</span>
             </span>;
     }else{
       return <span>
                 <span role="img" aria-label="raising hands">🙌</span>
-                  Not yet, but getting there!
+                  {resultNo[props.language]}
                 <span role="img" aria-label="raising hands">🙌</span>
             </span>;
     }
@@ -30,8 +60,8 @@ export default function Step4(props) {
   return (
     <div>
       <h1 className="style-font">{ renderResult(props.recordingResult) }</h1>
-      <h2>Your score is { props.recordingResult }%</h2>
-      <button className="style-font" onClick={() => props.setStep(3)}>&#8634; Retry</button>
+      <h2>{score[props.language]} { props.recordingResult }%</h2>
+      <button className="style-font" onClick={() => props.setStep(3)}>&#8634; {retry[props.language]}</button>
 
       <ReactToPrint
         trigger={() => <button className="style-font">&#128438; Print</button>}
