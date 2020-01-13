@@ -1,3 +1,4 @@
+import sys
 # =========================================================================================================
 # DEPLOYMENT CODE! FISSA
 # First we import our dependencies
@@ -11,7 +12,7 @@ import librosa
 import numpy as np
 import os
 import pickle
-from keras.models import load_model
+from sklearn.preprocessing import StandardScaler
 
 # Guard: check if there is a argument given, otherwise raise error
 if len(sys.argv) < 2:
@@ -45,9 +46,18 @@ incoming_data = extract_features(inputFile_path)
 # Then store the resulting MFCC in the feature array 
 features_deploy.append(incoming_data)
 # Put features in a pandas dataframe
-featuresdf = pd.DataFrame(features_deploy)
-print(featuresdf)
-1/0
+Xnew = pd.DataFrame(features_deploy)
+'''
+print(Xnew, 'After pandas')
+# reshape
+xtss = Xnew.shape
+print(incoming_data)
+print(Xnew)
+print(xtss)
+print(xtss[0])
+Xnew = np.reshape(Xnew, (xtss[0], xtss[1], 1))
+print(Xnew)
+sys.stdout.flush()
 
 # =========================================================================================================
 # Load in your Machine Learning/Deep Learning Model to make prediction 
@@ -56,16 +66,31 @@ print(featuresdf)
 # 3. Gradient Boosting
 # =========================================================================================================
 
-# 1. Load One-Dimensional Convolutional Network
-model = load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.h5')
+# 1. Load One-Dimensional Convolutional Network and make prediction
+import tensorflow as tf
+from keras.models import load_model
+model = tf.keras.models.load_model('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\1D_Conv_model.model')
+# ---------------------------------------------------------------------------------------------------------
+CATEGORIES = ["Brabants", "Non-Brabants"]
+# Make a prediction 
+prediction = model.predict_proba(Xnew)
+print(prediction)  # will be a list in a list.
+print(CATEGORIES[int(prediction[0][0])])
+# for i in range(len(Xnew)):
+	#print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
+'''
 
 # 2. Load Random Forest Classifier
 filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\random_forest_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
+sc = StandardScaler()
+Xnew = sc.fit_transform(Xnew)
+predictions = loaded_model.predict_proba(Xnew)
+print(predictions)
 
 # 3. Load Gradient Boosting
-filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
+# filename = 'C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\gradient_boosting_final.sav'
+# loaded_model = pickle.load(open(filename, 'rb'))
 
 # =========================================================================================================
 # Make a prediction for the outcome of the following models
@@ -75,12 +100,6 @@ loaded_model = pickle.load(open(filename, 'rb'))
 # =========================================================================================================
 
 # 1. Make prediction for One-Dimensional Convolutional Network
-X_new = scalar.transform(X_new)
-# make a prediction 
-y_new = model.predict_proba(X_new)
-# show the inputs and predicted outputs
-for i in range(len(X_new)):
-	print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
 
 # 2. Make prediction for Random Forest
 
