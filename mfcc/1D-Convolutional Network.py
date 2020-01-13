@@ -4,8 +4,8 @@
 #   The following code documents an attempt at making the MFCC array work with
 #   Keras' 1D Convolutional Neural Network. The attempt was fruitless.
 #==============================================================================
-
 import pickle
+import sys
 import os
 import pandas as pd
 import numpy as np
@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import sequence
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Conv1D, MaxPooling1D 
@@ -34,11 +34,11 @@ nb_filter_2 = 200
 filter_length_1 = 20
 filter_length_2 = 10
 hidden_dims = 250
-nb_epoch = 20
+nb_epoch = 100
 nb_classes = 2
 
 # Get dataframes from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas. Change this to your own path. 
-featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\example_datas\\mffc_extracted_WINDOWS') 
+featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\training_validation_dataset\\mffc_extracted_WINDOWS_training_and_validation') 
 print(featuresdf)
 
 # Convert features and corresponding classification labels into numpy arrays
@@ -49,8 +49,11 @@ y = np.array(featuresdf.class_label.tolist())
 le = LabelEncoder()
 yy = to_categorical(le.fit_transform(y)) 
 
-# Split the dataset in training and testing
-X_train, X_test, y_train, y_test = train_test_split(X, yy, test_size=0.30)
+# Split the dataset in training and validation. We keep an extra test set apart in this file C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\test_dataset
+# After optimzing the code. This neural network, will be tested with the testdataset. 
+X_train, X_test, y_train, y_test = train_test_split(X, yy, test_size=0.20, random_state=1200)
+print(y_test)
+print(X)
 
 print(X_train.shape, 'After first row')
 print(y_train.shape, 'y')
@@ -104,9 +107,6 @@ print('Added the second Conv1D layer...')
 model.add(MaxPooling1D(pool_size=3))
 print('Used Max Pooling..')
 
-model.add(BatchNormalization())
-print('Used Batch Normalization..')
-
 # The thrid and fourth Convolutional layer in order to learn more high level features. 
 # Adding a thirds 1D Conv layer with kernel size 10, and 200 feature detectors, will result in a matrix of 21 x 200 (30+1-10).
 # Adding a fourth 1D Conv layer with kernel size 10, and 200 feature detectors, will result in a matrix of 12 x 200 (210+1-10).
@@ -116,13 +116,13 @@ model.add(Conv1D(activation="relu",
                         padding="valid",
                         ))
 
-model.add(Conv1D(activation="relu",
-						filters=nb_filter,
-						kernel_size=filter_length_2, 
-                        padding="valid",
-                        ))                        
+# model.add(Conv1D(activation="relu",
+						#filters=nb_filter,
+						#kernel_size=filter_length_2, 
+                        #padding="valid",
+                        #))                        
 
-print('Added the third and fourth Conv1D layers...')
+print('Added the third Conv1D layers...')
 
 model.add(GlobalAveragePooling1D())
 print('Added Global average pooling...')
@@ -137,18 +137,46 @@ print('Added a vanilla layer')
 # The output of the layer is ... 
 model.add(Dropout(0.25))
 
-model.summary()
-model.get_config()
-
 # We project onto a single unit output layer, and squash it with a sigmoid:
 model.add(Dense(2, activation='softmax'))
 model.compile(loss='binary_crossentropy', optimizer='rmsprop')
+
+model.summary()
+model.get_config()
 
 # Train the model:
 model.fit(X_train, y_train, batch_size=batch_size, epochs=nb_epoch, verbose=1, validation_data=(X_test, y_test))
 y_preds = model.predict(X_test)
 score = model.evaluate(X_test, y_test, verbose=1)
 
-# print score and print classification report with accuracy
+# Print score and print classification report with accuracy
 print("Score:", score)
 print(classification_report(y_test.argmax(axis=1), y_preds.argmax(axis=1), target_names=le.classes_))
+
+# Save the model:
+model.save('1D_Conv_model.h5')
+
+#==============================================================================
+#   PROBABILITY PREDICTIONS
+#   ==============
+#   Here, we load in a file and make a prediction for the class Dutch
+#   Keras' 1D Convolutional Neural Network. The attempt was fruitless.
+#==============================================================================
+
+'''
+# Guard: check if there is 
+if len(sys.argv) < 2:
+    raise Exception('No input file')
+
+# Get argument from node.js. This is the absolute path from the generated audio file that is saved in "..."
+inputFile_path = sys.argv[1]
+# 
+
+Xnew = scalar.transform(Xnew)
+# make a prediction 
+ynew = model.predict_proba(Xnew)
+# show the inputs and predicted outputs
+for i in range(len(Xnew)):
+	print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
+
+''' 

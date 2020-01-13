@@ -15,7 +15,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import LabelEncoder
 
 # Get dataframe from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas
-featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\example_datas\\mffc_extracted_WINDOWS') 
+featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\training_validation_dataset\\mffc_extracted_WINDOWS_training_and_validation') 
 print(featuresdf)
 
 # Convert features and corresponding classification labels into numpy arrays
@@ -26,7 +26,7 @@ y = np.array(featuresdf.class_label.tolist())
 state = 0  
 test_size = 0.2
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=state)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=1000)
 print(len(X_train), 'training instances,', len(X_test), 'testing instances')
 
 # Scale the features on the X sets, this is a different scaler compared to RandomForest
@@ -35,7 +35,7 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 #Setting different learning rates and compare them afterwards
-lr_list = [0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1]
+lr_list = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1]
 
 for learning_rate in lr_list:
 
@@ -55,3 +55,7 @@ for learning_rate in lr_list:
 
 	print("Classification Report")
 	print(classification_report(y_test, predictions))
+
+# save the model to disk with pickle
+filename = 'gradient_boosting_final.sav'
+pickle.dump(gradient_booster_classifier, open(filename, 'wb'))

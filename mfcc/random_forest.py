@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 # Get dataframe from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas
-featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\example_datas\\mffc_extracted_WINDOWS') 
+featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\training_validation_dataset\\mffc_extracted_WINDOWS_training_and_validation') 
 print(featuresdf)
 
 # Convert features and corresponding classification labels into numpy arrays
@@ -20,7 +20,7 @@ X = np.array(featuresdf.feature.tolist())
 y = np.array(featuresdf.class_label.tolist())
 
 # Split our dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=10)
 
 # Log training and test instances
 print(len(X_train), 'training instances,', len(X_test), 'testing instances')
@@ -43,3 +43,7 @@ y_pred = classifier.predict(X_test)
 feature_imp = pd.Series(classifier.feature_importances_).sort_values(ascending=False)
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("Feature importance:", feature_imp)
+
+# save the model to disk with pickle
+filename = 'random_forest_final.sav'
+pickle.dump(classifier, open(filename, 'wb'))
