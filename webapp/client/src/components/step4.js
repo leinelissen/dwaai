@@ -34,8 +34,8 @@ const retry = {
 
 export default function Step4(props) {
   const componentRef = useRef();
-  const { recordingResult: { convolutionalNeuralNetwork } } = props;
-  const modelResult = Math.round(convolutionalNeuralNetwork * 100);
+  const { recordingResult: { gradientBoosting } } = props;
+  const modelResult = Math.round(gradientBoosting * 100);
 
   const renderResult = (result) => {
     if(result >= 80){
