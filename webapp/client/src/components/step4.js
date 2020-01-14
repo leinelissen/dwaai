@@ -32,43 +32,53 @@ const retry = {
   br: 'Opnieuw',
 }
 
+const done = {
+  en: 'Done',
+  nl: 'Klaar',
+  br: 'Klaar',
+}
+
 export default function Step4(props) {
   const componentRef = useRef();
-  const { recordingResult: { convolutionalNeuralNetwork } } = props;
-  const modelResult = Math.round(convolutionalNeuralNetwork * 100);
+  const printRef = useRef();
+  const { recordingResult: { gradientBoosting } } = props;
+  const modelResult = Math.round(gradientBoosting * 100);
 
-  const renderResult = (result) => {
+  const getHeadline = (result) => {
     if(result >= 80){
-      return <span>
-                <span role="img" aria-label="party popper">🎉</span>
-                  {resultYes[props.language]}
-                <span role="img" aria-label="party popper">🎉</span>
-            </span>;
+      return <span>{resultYes[props.language]}</span>;
     }else if(result>=30){
-      return <span>
-                <span role="img" aria-label="clapping hands">👏</span>
-                  {resultAlmost[props.language]}
-                <span role="img" aria-label="clapping hands">👏</span>
-            </span>;
+      return <span>{resultAlmost[props.language]}</span>;
     }else{
-      return <span>
-                <span role="img" aria-label="raising hands">🙌</span>
-                  {resultNo[props.language]}
-                <span role="img" aria-label="raising hands">🙌</span>
-            </span>;
+      return <span>{resultNo[props.language]}</span>;
     }
   }
 
+  const getEmoji = (result) => {
+    if(result >= 80){
+      return <span role="img" aria-label="party popper">🎉</span>;
+    }else if(result>=30){
+      return <span role="img" aria-label="clapping hands">👏</span>;
+    }else{
+      return <span role="img" aria-label="raising hands">🙌</span>;
+    }
+  }
+
+  useEffect(() => {
+    printRef.current.handleClick();
+  }, []);
+
   return (
     <div>
-      <h1 className="style-font">{ renderResult(modelResult) }</h1>
-      <h2>{score[props.language]} { modelResult }%</h2>
+      <h1 className="style-font">{ getHeadline(modelResult) }</h1>
+      <h2>{ getEmoji(modelResult) } {score[props.language]} { modelResult }%</h2>
       <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
+      <button className="style-font" onClick={() => props.setStep(0)}><img src="/undo-alt-regular.svg" alt="Done" /> {done[props.language]}</button>
 
       <ReactToPrint
-        trigger={() => <button className="style-font"><img src="/print-regular.svg" alt="Retry" /> Print</button>}
+        trigger={() => <React.Fragment/>}
         content={() => componentRef.current}
-        onAfterPrint={ () => props.setStep(1) }
+        ref={printRef}
         bodyClass="A5Landscape"
         pageStyle='@page { size: A5 landscape; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
       />
