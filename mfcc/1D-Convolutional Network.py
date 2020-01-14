@@ -30,12 +30,12 @@ no_mfcc_bands = 120
 test_dim = 1
 maxlen = 100
 batch_size = 97
-nb_filter = 150
+nb_filter = 100
 nb_filter_2 = 200
 filter_length_1 = 20
 filter_length_2 = 10
-hidden_dims = 250
-nb_epoch = 100
+hidden_dims = 100
+nb_epoch = 150
 nb_classes = 2
 
 # Get dataframes from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas. Change this to your own path. 
@@ -52,7 +52,7 @@ yy = to_categorical(le.fit_transform(y))
 
 # Split the dataset in training and validation. We keep an extra test set apart in this file C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\test_dataset
 # After optimzing the code. This neural network, will be tested with the testdataset. 
-X_train, X_test, y_train, y_test = train_test_split(X, yy, test_size=0.20, random_state=1200)
+X_train, X_test, y_train, y_test = train_test_split(X, yy, test_size=0.20, random_state=10)
 print(y_test)
 print(X)
 
