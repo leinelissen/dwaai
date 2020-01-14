@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from 'framer-motion';
 import eindhoven from '../assets/eindhoven.svg';
 import eindhovenMuseum from '../assets/eindhoven-museum.svg';
 
@@ -26,8 +25,8 @@ export default class VisualizationCard extends React.Component {
         </div>
 
         <div className="footer">
-          <img src={eindhoven} />
-          <img src={eindhovenMuseum} />
+          <img src={eindhoven} alt="Eindhoven" />
+          <img src={eindhovenMuseum} alt="Eindhoven Museum" />
         </div>
       </section>
     );

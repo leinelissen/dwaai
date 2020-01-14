@@ -7,9 +7,9 @@ export default function Step1({ language, setLanguage }) {
 
   return (
     <div id="language-picker">
-        <a href="#" className={language === 'br' && 'active'} onClick={setBr}>BR</a>
-        <a href="#" className={language === 'en' && 'active'} onClick={setEn}>EN</a>
-        <a href="#" className={language === 'nl' && 'active'} onClick={setNl}>NL</a>
+        <a href="/#" className={language === 'br' && 'active'} onClick={setBr}>BR</a>
+        <a href="/#" className={language === 'en' && 'active'} onClick={setEn}>EN</a>
+        <a href="/#" className={language === 'nl' && 'active'} onClick={setNl}>NL</a>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import ReactToPrint from 'react-to-print';
 import VisualisationCard from './VisualisationCard';
 
@@ -37,32 +37,30 @@ export default function Step4(props) {
   const { recordingResult: { gradientBoosting } } = props;
   const modelResult = Math.round(gradientBoosting * 100);
 
-  const renderResult = (result) => {
+  const getHeadline = (result) => {
     if(result >= 80){
-      return <span>
-                <span role="img" aria-label="party popper">🎉</span>
-                  {resultYes[props.language]}
-                <span role="img" aria-label="party popper">🎉</span>
-            </span>;
+      return <span>{resultYes[props.language]}</span>;
     }else if(result>=30){
-      return <span>
-                <span role="img" aria-label="clapping hands">👏</span>
-                  {resultAlmost[props.language]}
-                <span role="img" aria-label="clapping hands">👏</span>
-            </span>;
+      return <span>{resultAlmost[props.language]}</span>;
     }else{
-      return <span>
-                <span role="img" aria-label="raising hands">🙌</span>
-                  {resultNo[props.language]}
-                <span role="img" aria-label="raising hands">🙌</span>
-            </span>;
+      return <span>{resultNo[props.language]}</span>;
+    }
+  }
+
+  const getEmoji = (result) => {
+    if(result >= 80){
+      return <span role="img" aria-label="party popper">🎉</span>;
+    }else if(result>=30){
+      return <span role="img" aria-label="clapping hands">👏</span>;
+    }else{
+      return <span role="img" aria-label="raising hands">🙌</span>;
     }
   }
 
   return (
     <div>
-      <h1 className="style-font">{ renderResult(modelResult) }</h1>
-      <h2>{score[props.language]} { modelResult }%</h2>
+      <h1 className="style-font">{ getHeadline(modelResult) }</h1>
+      <h2>{ getEmoji(modelResult) } {score[props.language]} { modelResult }%</h2>
       <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
 
       <ReactToPrint
