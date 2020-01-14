@@ -39,7 +39,7 @@ nb_epoch = 100
 nb_classes = 2
 
 # Get dataframes from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas. Change this to your own path. 
-featuresdf = pd.read_pickle('C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\training_validation_dataset\\mffc_extracted_WINDOWS_training_and_validation') 
+featuresdf = pd.read_pickle(os.path.join(os.path.curdir, 'training_validation_dataset', 'mffc_extracted_WINDOWS_training_and_validation'))
 print(featuresdf)
 
 # Convert features and corresponding classification labels into numpy arrays
@@ -71,6 +71,7 @@ print(X_test)
 
 print(len(X_train), 'training sequences, ', len(X_test), 'test sequences')
 print(X_train.shape)
+print(xtss)
 print(y_train.shape)
 
 cat = LabelEncoder()

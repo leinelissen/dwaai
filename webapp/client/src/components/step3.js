@@ -111,11 +111,29 @@ export default class Step3 extends Component {
         return this.postRecording(blob);
       })
       .then((res) => {
+        console.log('Model results', res);
         // Return result from back-end to container component
-        this.props.setRecordingResult(res.result);
+        this.props.setRecordingResult(res);
         this.props.setVisualisationResult(this.state.visualisationValues);
         this.props.setStep(4);
+        return res;
       })
+      .then((res) => {
+        // Store the result in data foundry
+        return fetch(process.env.REACT_APP_DATA_FOUNDRY_URL, {
+          method: 'POST',        
+          headers: {
+            'Content-Type': 'application/json',
+            api_token: process.env.REACT_APP_DATA_FOUNDRY_TOKEN,
+            resource_id: process.env.REACT_APP_DATA_FOUNDRY_USERNAME,
+            token: process.env.REACT_APP_DATA_FOUNDRY_PASSWORD,
+          },
+          body: JSON.stringify({
+            [`${this.props.participantId}_percentage_brabants`]: res.gradientBoosting,
+          })
+        })
+      })
+      .then(res => {})
       .catch(err => console.log(err));
   }
 

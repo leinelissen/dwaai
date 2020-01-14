@@ -130,8 +130,9 @@ button:active, button:focus {
 
 .A5Landscape .postcard{
   width: 210mm;
-  height: 147mm;
-  padding: 10mm;
+  height: 130mm;
+  padding: 0 10mm;
+  overflow: hidden;
 }
 
 @media screen {/* screen preview */
@@ -170,6 +171,9 @@ button:active, button:focus {
 
 .postcard h2{
   font-size:2em;
+  font-family: 'IBM Plex Mono';
+  font-weight: 400;
+  margin-top: 5mm;
 }
 
 .postcard .footer{
@@ -194,8 +198,8 @@ button:active, button:focus {
 }
 
 .postcard .analysis > div {
-  width: 1.75mm;
-  margin: 1mm;
+  width: 2.5mm;
+  margin: 1.25mm;
 }
 
 /*body iframe {
@@ -204,3 +208,16 @@ button:active, button:focus {
   height: 100vh;
   width: 70vw;
 }*/
+
+button {
+  line-height: 1em;
+  display: inline-flex;
+  justify-content: center;
+}
+
+button img {
+  height: 1em;
+  width: auto;
+  display: inline-block;
+  margin-right: 0.5em;
+}

@@ -17,7 +17,7 @@ const resultAlmost = {
 const resultNo = {
   en: 'Not yet, but getting there!',
   nl: 'Nog niet, maar gaat de goede kant op!',
-  br: 'Nog nie, ffkes oefenen nog!',
+  br: 'Nog nie, efkes oefenen nog!',
 }
 
 const score = {
@@ -34,6 +34,8 @@ const retry = {
 
 export default function Step4(props) {
   const componentRef = useRef();
+  const { recordingResult: { gradientBoosting } } = props;
+  const modelResult = Math.round(gradientBoosting * 100);
 
   const renderResult = (result) => {
     if(result >= 80){
@@ -59,19 +61,19 @@ export default function Step4(props) {
 
   return (
     <div>
-      <h1 className="style-font">{ renderResult(props.recordingResult) }</h1>
-      <h2>{score[props.language]} { props.recordingResult }%</h2>
-      <button className="style-font" onClick={() => props.setStep(3)}>&#8634; {retry[props.language]}</button>
+      <h1 className="style-font">{ renderResult(modelResult) }</h1>
+      <h2>{score[props.language]} { modelResult }%</h2>
+      <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
 
       <ReactToPrint
-        trigger={() => <button className="style-font">&#128438; Print</button>}
+        trigger={() => <button className="style-font"><img src="/print-regular.svg" alt="Retry" /> Print</button>}
         content={() => componentRef.current}
         onAfterPrint={ () => props.setStep(1) }
         bodyClass="A5Landscape"
         pageStyle='@page { size: A5 landscape; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
       />
       <div style={{ display: "none" }}>
-        <VisualisationCard ref={componentRef} percentage={props.recordingResult} visualisation={props.visualisationResult} />
+        <VisualisationCard ref={componentRef} percentage={modelResult} visualisation={props.visualisationResult} />
       </div>
     </div>
   );

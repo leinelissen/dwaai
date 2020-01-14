@@ -34,27 +34,24 @@ scaler = MinMaxScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
-#Setting different learning rates and compare them afterwards
-lr_list = [0.01, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1]
-
-for learning_rate in lr_list:
-
-	gradient_booster_classifier = GradientBoostingClassifier(n_estimators=20, learning_rate=learning_rate, max_features=2, max_depth=2, random_state=0)
-	gradient_booster_classifier.fit(X_train, y_train)
-	print("Learning rate: ", learning_rate)
-	print("Accuracy score (training): {0:.2f}".format(gradient_booster_classifier.score(X_train, y_train)))
-	print("Accuracy score (validation): {0:.2f}".format(gradient_booster_classifier.score(X_test, y_test)))
+#After testing different learning rates, use the one with the highest accuracy on the validation dataset
+learning_rate = 0.5
+gradient_booster_classifier = GradientBoostingClassifier(n_estimators=20, learning_rate=learning_rate, max_features=2, max_depth=2, random_state=0)
+gradient_booster_classifier.fit(X_train, y_train)
+print("Learning rate: ", learning_rate)
+print("Accuracy score (training): {0:.2f}".format(gradient_booster_classifier.score(X_train, y_train)))
+print("Accuracy score (validation): {0:.2f}".format(gradient_booster_classifier.score(X_test, y_test)))
 
 #Evaluate the classifier by checking its accuracy and creating a confusion matrix
-	gradient_booster__evaluation_classifier = GradientBoostingClassifier(n_estimators=100, learning_rate=0.5, max_features=2, max_depth=2, random_state=0)
-	gradient_booster__evaluation_classifier.fit(X_train, y_train)
-	predictions = gradient_booster__evaluation_classifier.predict(X_test)
+gradient_booster__evaluation_classifier = GradientBoostingClassifier(n_estimators=100, learning_rate=0.5, max_features=2, max_depth=2, random_state=0)
+gradient_booster__evaluation_classifier.fit(X_train, y_train)
+predictions = gradient_booster__evaluation_classifier.predict(X_test)
 
-	print("Confusion Matrix:")
-	print(confusion_matrix(y_test, predictions))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, predictions))
 
-	print("Classification Report")
-	print(classification_report(y_test, predictions))
+print("Classification Report")
+print(classification_report(y_test, predictions))
 
 # save the model to disk with pickle
 filename = 'gradient_boosting_final.sav'

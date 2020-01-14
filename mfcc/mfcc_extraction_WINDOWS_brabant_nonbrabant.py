@@ -50,8 +50,7 @@ path = os.getcwd()
 # Get the list of all files and directories in current working directory 
 dir_list = os.listdir(path) 
 
-for className in os.listdir(os.getcwd()):
-	
+for className in os.listdir(os.getcwd()):	
 	print(className)
 	# Navigate to the map called english (which contain all our Brabants accent samples)
 	if className == "Brabants":

@@ -30,7 +30,7 @@ app.post('/recording', upload.single('audio'), function (req, res) {
 
   // Spawn python process
   const scriptPath = path.resolve(__dirname, '..', 'mfcc', process.env.MODEL_SCRIPT_NAME);
-  const pythonProcess = exec(`python "${scriptPath}" "${req.file.path}"`, (error, stdout, stderr) => {
+  const pythonProcess = exec(`${process.env.PYTHON_BIN} "${scriptPath}" "${req.file.path}"`, (error, stdout, stderr) => {
     if (error || stderr) {
       // Log error message to console
       console.log('Received error from python: ', error, stderr);
@@ -41,7 +41,14 @@ app.post('/recording', upload.single('audio'), function (req, res) {
 
     console.log('Received data from python: ', stdout);
 
+    // Process response
+    const [ randomForest, gradientBoosting, convolutionalNeuralNetwork ] = stdout.split(',');
+
     // Defer response
-    return res.send({ mfcc: stdout });
+    return res.send({ 
+      randomForest: parseFloat(randomForest),
+      gradientBoosting: parseFloat(gradientBoosting),
+      convolutionalNeuralNetwork: parseFloat(convolutionalNeuralNetwork),
+     });
   });
 });

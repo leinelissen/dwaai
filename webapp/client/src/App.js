@@ -12,7 +12,7 @@ console.log(process.env, process.env.REACT_APP_ENABLE_QR_CODE_READER);
 
 function App() {
   const [step, setStep] = useState(ENABLE_QR_CODE_READER ? 0 : 1);
-  const [participantId, setParticipantId] = useState(ENABLE_QR_CODE_READER ? null : 1);
+  const [participantId, setParticipantId] = useState(ENABLE_QR_CODE_READER ? null : 1001);
   const [recordingResult, setRecordingResult] = useState();
   const [visualisationResult, setVisualisationResult] = useState();
   const [language, setLanguage] = useState('en');
