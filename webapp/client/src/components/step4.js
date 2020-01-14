@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactToPrint from 'react-to-print';
 import VisualisationCard from './VisualisationCard';
 
@@ -32,8 +32,15 @@ const retry = {
   br: 'Opnieuw',
 }
 
+const done = {
+  en: 'Done',
+  nl: 'Klaar',
+  br: 'Klaar',
+}
+
 export default function Step4(props) {
   const componentRef = useRef();
+  const printRef = useRef();
   const { recordingResult: { gradientBoosting } } = props;
   const modelResult = Math.round(gradientBoosting * 100);
 
@@ -57,16 +64,21 @@ export default function Step4(props) {
     }
   }
 
+  useEffect(() => {
+    printRef.current.handleClick();
+  }, []);
+
   return (
     <div>
       <h1 className="style-font">{ getHeadline(modelResult) }</h1>
       <h2>{ getEmoji(modelResult) } {score[props.language]} { modelResult }%</h2>
       <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
+      <button className="style-font" onClick={() => props.setStep(0)}><img src="/undo-alt-regular.svg" alt="Done" /> {done[props.language]}</button>
 
       <ReactToPrint
-        trigger={() => <button className="style-font"><img src="/print-regular.svg" alt="Retry" /> Print</button>}
+        trigger={() => <React.Fragment/>}
         content={() => componentRef.current}
-        onAfterPrint={ () => props.setStep(1) }
+        ref={printRef}
         bodyClass="A5Landscape"
         pageStyle='@page { size: A5 landscape; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 40px !important; } }'
       />
