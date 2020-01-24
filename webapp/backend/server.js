@@ -29,7 +29,7 @@ app.post('/recording', upload.single('audio'), function (req, res) {
   }
 
   // Spawn python process
-  const scriptPath = path.resolve(__dirname, '..', 'mfcc', process.env.MODEL_SCRIPT_NAME);
+  const scriptPath = path.resolve(__dirname, '..', '..', 'mfcc', process.env.MODEL_SCRIPT_NAME);
   const pythonProcess = exec(`${process.env.PYTHON_BIN} "${scriptPath}" "${req.file.path}"`, (error, stdout, stderr) => {
     if (error || stderr) {
       // Log error message to console
