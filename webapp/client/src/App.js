@@ -17,6 +17,15 @@ function App() {
   const [visualisationResult, setVisualisationResult] = useState();
   const [language, setLanguage] = useState('en');
 
+  document.onkeydown = () => {
+    console.log('CLick', step);
+    if (step === 4) {
+      setStep(1);
+    } else if (step === 1 || step === 2) {
+      setStep(step + 1);
+    }
+  }
+
   const state = {
     step,
     setStep,

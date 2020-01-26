@@ -63,7 +63,7 @@ sys.stdout.flush()
 # =========================================================================================================
 # Load in your Machine Learning/Deep Learning Model to make prediction 
 # 1. Random Forest
-# 2. Gradient Boostin
+# 2. Gradient Boosting
 # 3. One-Dimensional Convolutional Network
 # =========================================================================================================
 
@@ -86,6 +86,7 @@ xtss = Xnew.shape
 XKeras = np.reshape(Xnew.values, (xtss[0], xtss[1], 1))
 # Make a prediction 
 predictions_cnn = model.predict_proba(XKeras)
+# print("X=%s, Predicted=%s" % (XKeras, predictions_cnn))
 
 # Output all predictions
 print(str(predictions_rf[0][0]) + ',' + str(predictions_gb[0][0]) + ',' + str(predictions_cnn[0][0]))

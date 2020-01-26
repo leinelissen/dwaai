@@ -18,12 +18,12 @@ from keras.models import Sequential, load_model
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers.normalization import BatchNormalization
 from keras.layers.convolutional import Conv1D, MaxPooling1D 
-import matplotlib.pyplot as plt
 from keras.utils import np_utils
 from keras.utils import to_categorical
 from keras.layers import GaussianNoise, GlobalAveragePooling1D
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import f1_score
+import matplotlib.pyplot as plt
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -40,22 +40,24 @@ nb_epoch = 150
 nb_classes = 2
 
 # Get dataframes from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas. Change this to your own path. 
-featuresdf = pd.read_pickle(os.path.join(os.path.curdir, 'training_validation_dataset', 'mffc_extracted_WINDOWS_training_and_validation'))
-print(featuresdf)
+features_trainingandvalidation_df = pd.read_pickle(os.path.join(os.path.curdir, 'training_validation_dataset', 'mffc_extracted_WINDOWS_training_and_validation'))
+print(features_trainingandvalidation_df)
+
+# Get dataframes from folder C:\Users\s157874\Documents\GitHub\dwaai\mfcc\example_datas. Change this to your own path. 
+features_testing_df = pd.read_pickle(os.path.join(os.path.curdir, 'test_dataset', 'mffc_extracted_WINDOWS_test'))
+print(features_testing_df)
 
 # Convert features and corresponding classification labels into numpy arrays
-X = np.array(featuresdf.feature.tolist())
-y = np.array(featuresdf.class_label.tolist())
+X_train = np.array(features_trainingandvalidation_df.feature.tolist())
+y_train = np.array(features_trainingandvalidation_df.class_label.tolist())
+
+X_test = np.array(features_testing_df.feature.tolist())
+y_test = np.array(features_testing_df.class_label.tolist())
 
 # Encode the classification labels
 le = LabelEncoder()
-yy = to_categorical(le.fit_transform(y)) 
-
-# Split the dataset in training and validation. We keep an extra test set apart in this file C:\\Users\\s157874\\Documents\\GitHub\\dwaai\\mfcc\\test_dataset
-# After optimzing the code. This neural network, will be tested with the testdataset. 
-X_train, X_test, y_train, y_test = train_test_split(X, yy, test_size=0.20, random_state=10)
-print(y_test)
-print(X)
+y_train = to_categorical(le.fit_transform(y_train)) 
+y_test = to_categorical(le.fit_transform(y_test)) 
 
 print(X_train.shape, 'After first row')
 print(y_train.shape, 'y')
@@ -131,16 +133,17 @@ model.add(Conv1D(activation="relu",
 
 print('Added the third Conv1D layers...')
 
-# We add a global average pooling layer 
 model.add(GlobalAveragePooling1D())
 print('Added Global average pooling...')
 model.summary()
 model.get_config()
 
-# We add a dense layer 
+# We add a vanilla hidden layer.. Why?
 model.add(Dense(hidden_dims, activation='relu'))
+print('Added a vanilla layer')
 
 # We add a Dropout layer, it will randomly assign 0 weights to the neurons the network. 
+# The output of the layer is ... 
 model.add(Dropout(0.25))
 
 # We project onto a single unit output layer, and squash it with a sigmoid:
@@ -182,14 +185,13 @@ for i in range(len(Xnew)):
 '''
 
 # save the model 
-model.save('1D_Conv_model.model')
+model.save('1D_Conv_model_testing.model')
 
-# plot the model and save it in a graph
-
+# plot the value loss by using the matplot library
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
-plt.title('ID-Convolutional Network Training Model loss')
+plt.title('ID-Convolutional Network Testing Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
-plt.legend(['Train', 'Validation'], loc='upper left')
+plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
