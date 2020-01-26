@@ -73,7 +73,7 @@ export default function Step4(props) {
       <h1 className="style-font">{ getHeadline(modelResult) }</h1>
       <h2>{ getEmoji(modelResult) } {score[props.language]} { modelResult }%</h2>
       <button className="style-font" onClick={() => props.setStep(3)}><img src="/undo-alt-regular.svg" alt="Retry" /> {retry[props.language]}</button>
-      <button className="style-font" onClick={() => props.setStep(0)}><img src="/undo-alt-regular.svg" alt="Done" /> {done[props.language]}</button>
+      <button className="style-font" onClick={() => props.setStep(0)}><img src="/check-regular.svg" alt="Done" /> {done[props.language]}</button>
 
       <ReactToPrint
         trigger={() => <React.Fragment/>}
